@@ -30,7 +30,7 @@ import info.varden.andesite.core.AndesiteProject;
 import info.varden.andesite.core.ProjectProperties;
 import info.varden.andesite.core.Screenshot;
 import info.varden.andesite.core.VariableVersionParser;
-import info.varden.andesite.creator.CipheredKeyPair;
+import info.varden.andesite.crypto.CipheredKeyPair;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
