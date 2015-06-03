@@ -1,0 +1,4 @@
+// This file defines common behavior between the api and the other projects
+
+version = ''
+group = ''

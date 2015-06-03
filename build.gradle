@@ -34,3 +34,5 @@ repositories{
 dependencies{
 
 }
+
+apply from: 'common_build.gradle'
