@@ -1,7 +1,7 @@
 // This file defines common behavior between the api and the other projects
 
-version = ''
-group = ''
+version = 'alpha-1'
+group = 'info.varden'
 
 // Apply common plugins
 // IDE plugins
