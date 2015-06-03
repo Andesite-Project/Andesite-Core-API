@@ -1,0 +1,36 @@
+// buildscript configuration
+buildscript{
+  // buildscript repositories
+  repositories{
+
+  }
+
+  // buildscript dependencies
+  dependencies{
+
+  }
+}
+
+// Apply language plugins
+apply plugin: 'java'
+apply plugin: 'scala'
+
+// Apply IDE plugins
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+// Apply misc other plugins
+apply plugin: 'maven'
+
+// Project repositories
+repositories{
+  // JCenter
+  jcenter()
+  // Maven Central
+  mavenCentral()
+}
+
+// Project dependencies
+dependencies{
+
+}
