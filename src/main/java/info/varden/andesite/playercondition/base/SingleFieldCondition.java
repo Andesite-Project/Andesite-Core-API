@@ -26,7 +26,7 @@ package info.varden.andesite.playercondition.base;
 import info.varden.andesite.core.CompareMode;
 import info.varden.andesite.core.PlayerCondition;
 import info.varden.andesite.core.Utils;
-import info.varden.andesite.modloader.PlayerWrapper;
+import info.varden.andesite.core.wrapper.PlayerWrapper;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -26,6 +26,7 @@ package info.varden.andesite.action;
 import info.varden.andesite.action.base.DataStreamActionWrapper;
 import info.varden.andesite.core.Action;
 import info.varden.andesite.core.ActionData;
+import info.varden.andesite.core.ActionExecutionContext;
 import info.varden.andesite.core.BlockAction;
 import info.varden.andesite.core.BlockBreakSource;
 import info.varden.andesite.core.PlayerCondition;
@@ -33,15 +34,13 @@ import info.varden.andesite.core.PlayerConditions;
 import info.varden.andesite.core.PlayerRequirements;
 import info.varden.andesite.core.SilkTouchMode;
 import info.varden.andesite.core.VariableVersionParser;
+import info.varden.andesite.core.wrapper.AndesiteItemStack;
 import info.varden.andesite.io.AndesiteIO;
-import info.varden.andesite.modloader.BlockWrapper;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
-
-import net.minecraft.item.ItemStack;
 
 /**
  * Action for changing drops of blocks when certain criteria is met.
@@ -69,7 +68,7 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
     /**
      * List of items the block should drop.
      */
-    private List<ItemStack> items; // TODO: Can't use net.minecraft here, I need to write a wrapper for this.
+    private List<AndesiteItemStack> items;
     /**
      * The chance for each ItemStack to drop.
      */
@@ -96,8 +95,8 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
      * Executes the action.
      */
     @Override
-    public void execute() {
-        BlockWrapper.getFor(blockId).setConditionalDrops(this.mode, this.source, this.fortuneLevel, this.items, this.dropChance, this.overrideDrops, this.conditions);
+    public void execute(ActionExecutionContext context) {
+        context.getBlockWrapperFor(blockId).setConditionalDrops(this.mode, this.source, this.fortuneLevel, this.items, this.dropChance, this.overrideDrops, this.conditions);
     }
     
     /**
@@ -112,7 +111,7 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
      * @param conditions List of player conditions required for this action to apply if the block break source was a player
      * @return An instance of BlockConditionalDropAction initialized with the given criteria
      */
-    public static BlockConditionalDropAction create(String blockId, SilkTouchMode mode, BlockBreakSource source, int fortuneLevel, List<ItemStack> items, float dropChance, boolean overrideDrops, PlayerRequirements conditions) {
+    public static BlockConditionalDropAction create(String blockId, SilkTouchMode mode, BlockBreakSource source, int fortuneLevel, List<AndesiteItemStack> items, float dropChance, boolean overrideDrops, PlayerRequirements conditions) {
         BlockConditionalDropAction a = new BlockConditionalDropAction();
         a.setBlockId(blockId);
         a.setSilkTouchMode(mode);
@@ -269,7 +268,7 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
      * Sets the item drops for this action
      * @param items List of item drops to set
      */
-    public void setItems(List<ItemStack> items) {
+    public void setItems(List<AndesiteItemStack> items) {
         this.items = items;
     }
     
@@ -277,7 +276,7 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
      * Gets the item drops for this action
      * @return List of item drops
      */
-    public List<ItemStack> getItems() {
+    public List<AndesiteItemStack> getItems() {
         return this.items;
     }
     

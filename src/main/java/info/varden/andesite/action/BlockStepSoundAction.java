@@ -26,9 +26,10 @@ package info.varden.andesite.action;
 import info.varden.andesite.action.base.DataStreamActionWrapper;
 import info.varden.andesite.core.Action;
 import info.varden.andesite.core.ActionData;
+import info.varden.andesite.core.ActionExecutionContext;
 import info.varden.andesite.core.BlockAction;
+import info.varden.andesite.core.wrapper.StepSoundWrapper;
 import info.varden.andesite.io.AndesiteIO;
-import info.varden.andesite.modloader.BlockWrapper;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -46,33 +47,16 @@ public class BlockStepSoundAction extends DataStreamActionWrapper implements Act
      */
     private String blockId;
     /**
-     * The name of the sound to play when stepped on.
+     * The sound configuration for this block.
      */
-    private String soundName;
-    /**
-     * The name of the sound to play when broken.
-     */
-    private String breakSound;
-    /**
-     * The volume of the sounds.
-     */
-    private float volume;
-    /**
-     * The frequency of the sounds.
-     */
-    private float freq;
+    private StepSoundWrapper sound;
 
     /**
      * Executes the action.
      */
     @Override
-    public void execute() {
-        BlockWrapper.getFor(blockId).setStepSound(new net.minecraft.block.Block.SoundType(this.soundName, this.volume, this.freq) {
-            @Override
-            public String getBreakSound() {
-                return "dig." + breakSound;
-            }
-        });
+    public void execute(ActionExecutionContext context) {
+        context.getBlockWrapperFor(blockId).setStepSound(this.sound);
     }
 
     /**
@@ -84,10 +68,12 @@ public class BlockStepSoundAction extends DataStreamActionWrapper implements Act
     @Override
     public Action parse(DataInputStream input) throws IOException {
         this.blockId = AndesiteIO.readString(input);
-        this.soundName = AndesiteIO.readString(input);
-        this.breakSound = AndesiteIO.readString(input);
-        this.volume = input.readFloat();
-        this.freq = input.readFloat();
+        String soundName = AndesiteIO.readString(input);
+        String breakSound = AndesiteIO.readString(input);
+        String placeSound = AndesiteIO.readString(input);
+        float volume = input.readFloat();
+        float freq = input.readFloat();
+        this.sound = new StepSoundWrapper(soundName, breakSound, placeSound, volume, freq);
         return this;
     }
 
@@ -99,10 +85,11 @@ public class BlockStepSoundAction extends DataStreamActionWrapper implements Act
     @Override
     public void write(DataOutputStream output) throws IOException {
         AndesiteIO.writeString(this.blockId, output);
-        AndesiteIO.writeString(this.soundName, output);
-        AndesiteIO.writeString(this.breakSound, output);
-        output.writeFloat(this.volume);
-        output.writeFloat(this.freq);
+        AndesiteIO.writeString(this.sound.getSoundName(), output);
+        AndesiteIO.writeString(this.sound.getBreakSound(), output);
+        AndesiteIO.writeString(this.sound.getPlaceSound(), output);
+        output.writeFloat(this.sound.getVolume());
+        output.writeFloat(this.sound.getFrequency());
     }
     
     /**
@@ -127,12 +114,33 @@ public class BlockStepSoundAction extends DataStreamActionWrapper implements Act
      * @return An instance of BlockStepSoundAction
      */
     public static BlockStepSoundAction create(String blockId, String soundName, String breakSound, float volume, float freq) {
+        return create(blockId, soundName, breakSound, breakSound, volume, freq);
+    }
+    
+    /**
+     * Creates an instance of BlockStepSoundAction with given parameters.
+     * @param blockId The block ID this action should apply to
+     * @param soundName The name of the sound to play when stepped on
+     * @param breakSound The name of the sound to play when broken
+     * @param placeSound The name of the sound to play when placed
+     * @param volume The volume of the sounds
+     * @param freq The frequency of the sounds
+     * @return An instance of BlockStepSoundAction
+     */
+    public static BlockStepSoundAction create(String blockId, String soundName, String breakSound, String placeSound, float volume, float freq) {
+        return create(blockId, new StepSoundWrapper(soundName, breakSound, placeSound, volume, freq));
+    }
+    
+    /**
+     * Creates an instance of BlockStepSoundAction with given parameters.
+     * @param blockId The block ID this action should apply to
+     * @param sound The sound of the block
+     * @return 
+     */
+    public static BlockStepSoundAction create(String blockId, StepSoundWrapper sound) {
         BlockStepSoundAction a = new BlockStepSoundAction();
         a.setBlockId(blockId);
-        a.setSoundName(soundName);
-        a.setBreakSound(breakSound);
-        a.setVolume(volume);
-        a.setFrequency(freq);
+        a.setSound(sound);
         return a;
     }
     
@@ -154,67 +162,19 @@ public class BlockStepSoundAction extends DataStreamActionWrapper implements Act
     }
     
     /**
-     * Sets the name of the sound played when stepped on.
-     * @param soundName The name of the sound to set
+     * Sets the sound of the block.
+     * @param sound The sound to set
      */
-    public void setSoundName(String soundName) {
-        this.soundName = soundName;
+    public void setSound(StepSoundWrapper sound) {
+        this.sound = sound;
     }
     
     /**
-     * Gets the name of the sound played when stepped on.
-     * @return The name of the sound
+     * Gets the sound of the block.
+     * @return The sound
      */
-    public String getSoundName() {
-        return this.soundName;
-    }
-    
-    /**
-     * Sets the name of the sound played when broken.
-     * @param breakSound The name of the sound to set
-     */
-    public void setBreakSound(String breakSound) {
-        this.breakSound = breakSound;
-    }
-    
-    /**
-     * Gets the name of the sound played when broken.
-     * @return The name of the sound
-     */
-    public String getBreakSound() {
-        return this.breakSound;
-    }
-    
-    /**
-     * Sets the volume of the sounds.
-     * @param volume The volume to set
-     */
-    public void setVolume(float volume) {
-        this.volume = volume;
-    }
-    
-    /**
-     * Gets the volume of the sounds.
-     * @return The volume to set
-     */
-    public float getVolume() {
-        return this.volume;
-    }
-    
-    /**
-     * Sets the frequency of the sounds.
-     * @param freq The frequency to set
-     */
-    public void setFrequency(float freq) {
-        this.freq = freq;
-    }
-    
-    /**
-     * Gets the frequency of the sounds.
-     * @return The frequency
-     */
-    public float getFrequency() {
-        return this.freq;
+    public StepSoundWrapper getSound() {
+        return this.sound;
     }
 
 }

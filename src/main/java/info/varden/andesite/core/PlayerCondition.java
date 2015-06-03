@@ -23,8 +23,8 @@
  */
 package info.varden.andesite.core;
 
+import info.varden.andesite.core.wrapper.PlayerWrapper;
 import info.varden.andesite.io.Serializable;
-import info.varden.andesite.modloader.PlayerWrapper;
 
 /**
  * Base interface for all player conditions.

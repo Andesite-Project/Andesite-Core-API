@@ -26,9 +26,9 @@ package info.varden.andesite.action;
 import info.varden.andesite.action.base.DataStreamActionWrapper;
 import info.varden.andesite.core.Action;
 import info.varden.andesite.core.ActionData;
+import info.varden.andesite.core.ActionExecutionContext;
 import info.varden.andesite.core.BlockAction;
 import info.varden.andesite.io.AndesiteIO;
-import info.varden.andesite.modloader.BlockWrapper;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -58,8 +58,8 @@ public class BlockHardnessAction extends DataStreamActionWrapper implements Acti
      * Executes the action.
      */
     @Override
-    public void execute() {
-        BlockWrapper.getFor(blockId).setHardness(hardness).setResistance(resistance);
+    public void execute(ActionExecutionContext context) {
+        context.getBlockWrapperFor(blockId).setHardness(hardness).setResistance(resistance);
     }
     
     /**

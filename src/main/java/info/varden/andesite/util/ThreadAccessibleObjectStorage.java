@@ -21,70 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package info.varden.andesite.core;
+package info.varden.andesite.util;
 
 /**
- * Comparisons between two values.
+ * Class that allows getting and setting of objects in a final context.
  * @author Marius
  */
-public enum CompareMode {
+public class ThreadAccessibleObjectStorage<T> {
     /**
-     * A less than B
+     * The current data.
      */
-    LESS_THAN(0),
-    /**
-     * A less than or equal to B
-     */
-    LESS_THAN_OR_EQUALS(1),
-    /**
-     * A equal to B
-     */
-    EQUALS(2),
-    /**
-     * A greater than or equal to B
-     */
-    GREATER_THAN_OR_EQUALS(3),
-    /**
-     * A greater than B
-     */
-    GREATER_THAN(4),
-    /**
-     * A not equal to B
-     */
-    NOT_EQUALS(5);
+    private volatile T object;
     
     /**
-     * The save ID for this CompareMode.
+     * Initializes the storage with initial data.
+     * @param init The initial data
      */
-    private final int id;
-    
-    /**
-     * Initializes the CompareMode.
-     * @param id The save ID of the CompareMode.
-     */
-    private CompareMode(int id) {
-        this.id = id;
+    public ThreadAccessibleObjectStorage(T init) {
+        this.object = init;
     }
     
     /**
-     * Gets the save ID of the CompareMode.
-     * @return The save ID
+     * Sets the stored data.
+     * @param object The data to set
      */
-    public int getID() {
-        return this.id;
+    public void set(T object) {
+        this.object = object;
     }
     
     /**
-     * Finds a CompareMode by its save ID.
-     * @param id The CompareMode save ID to look up
-     * @return A CompareMode
+     * Gets the stored data.
+     * @return The data
      */
-    public static CompareMode findById(int id) {
-        for (CompareMode mode : CompareMode.values()) {
-            if (mode.getID() == id) {
-                return mode;
-            }
-        }
-        throw new UnsupportedOperationException("Comparison mode ID " + id + " not found!");
+    public T get() {
+        return this.object;
     }
 }

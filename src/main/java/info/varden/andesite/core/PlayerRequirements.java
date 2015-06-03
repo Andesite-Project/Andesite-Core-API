@@ -23,12 +23,10 @@
  */
 package info.varden.andesite.core;
 
-import info.varden.andesite.modloader.PlayerWrapper;
+import info.varden.andesite.core.wrapper.PlayerWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * List of requirements a player has to satisfy.
@@ -45,10 +43,9 @@ public class PlayerRequirements {
      * @param player The player to check
      * @return True if satisfied, false otherwise
      */
-    public boolean satisfiedBy(EntityPlayer player) {
-        PlayerWrapper pw = PlayerWrapper.getFor(player);
+    public boolean satisfiedBy(PlayerWrapper player) {
         for (PlayerCondition condition : this.conditions) {
-            if (!condition.meetsRequirements(pw)) {
+            if (!condition.meetsRequirements(player)) {
                 return false;
             }
         }

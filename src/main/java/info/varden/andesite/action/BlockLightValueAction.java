@@ -26,8 +26,8 @@ package info.varden.andesite.action;
 import info.varden.andesite.action.base.IdDataAction;
 import info.varden.andesite.core.Action;
 import info.varden.andesite.core.ActionData;
+import info.varden.andesite.core.ActionExecutionContext;
 import info.varden.andesite.core.BlockAction;
-import info.varden.andesite.modloader.BlockWrapper;
 
 /**
  * Action that sets the brightness of a block.
@@ -40,8 +40,8 @@ public class BlockLightValueAction extends IdDataAction<Float> implements Action
      * Executes the action.
      */
     @Override
-    public void execute() {
-        BlockWrapper.getFor(getID()).setLightLevel(getData().floatValue());
+    public void execute(ActionExecutionContext context) {
+        context.getBlockWrapperFor(getID()).setLightLevel(getData());
     }
     
     /**

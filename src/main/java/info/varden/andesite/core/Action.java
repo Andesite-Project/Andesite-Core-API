@@ -39,8 +39,9 @@ public interface Action extends Serializable {
     public Action parse(byte[] aeData);
     /**
      * Executes the action in game.
+     * @param context Mod loader specific context for executing the action.
      */
-    public void execute();
+    public void execute(ActionExecutionContext context);
     /**
      * Converts the action into a byte array for file storage.
      * @return Raw data array representing this action

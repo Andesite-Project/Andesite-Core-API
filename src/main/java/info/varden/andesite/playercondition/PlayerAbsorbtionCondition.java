@@ -25,7 +25,7 @@ package info.varden.andesite.playercondition;
 
 import info.varden.andesite.core.PlayerCondition;
 import info.varden.andesite.core.PlayerConditionData;
-import info.varden.andesite.modloader.PlayerWrapper;
+import info.varden.andesite.core.wrapper.PlayerWrapper;
 import info.varden.andesite.playercondition.base.SingleFieldCondition;
 
 @PlayerConditionData(id = 0, version = 1)
@@ -39,6 +39,11 @@ public class PlayerAbsorbtionCondition extends SingleFieldCondition<Float> imple
     @Override
     protected Float getFieldForComparison(PlayerWrapper player) {
         return player.getAbsorptionAmount();
+    }
+
+    @Override
+    public boolean meetsRequirements(PlayerWrapper player) {
+        throw new UnsupportedOperationException("Not supported yet."); // TODO: Support this
     }
 
 }
