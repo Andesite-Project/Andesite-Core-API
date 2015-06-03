@@ -5,10 +5,86 @@
  */
 package info.varden.andesite.core.wrapper;
 
+import info.varden.andesite.io.AndesiteIO;
+import info.varden.andesite.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * The Andesite Project's wrapper for Minecraft item stacks.
  * @author Marius
  */
-public class AndesiteItemStack {
+public class AndesiteItemStack implements Serializable {
+    private String id;
+    private int amount;
+    private int meta;
+    // TODO: NBT data
     
+    public AndesiteItemStack(String id, int amount, int meta) {
+        this.id = id;
+        this.amount = amount;
+        this.meta = meta;
+    }
+    
+    public String getID() {
+        return this.id;
+    }
+    
+    public void setID(String id) {
+        this.id = id;
+    }
+    
+    public int getAmount() {
+        return this.amount;
+    }
+    
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+    
+    public int getMeta() {
+        return this.meta;
+    }
+    
+    public void setMeta(int meta) {
+        this.meta = meta;
+    }
+
+    @Override
+    public Serializable parse(byte[] data) {
+        try {
+            DataInputStream dis = new DataInputStream(new ByteArrayInputStream(data));
+            String id = AndesiteIO.readString(dis);
+            int amount = dis.readInt();
+            int meta = dis.readInt();
+            int nbtLength = dis.readInt();
+            dis.skip(nbtLength); // TODO: Support this
+            return new AndesiteItemStack(id, amount, meta);
+        } catch (IOException ex) {
+            Logger.getLogger(AndesiteItemStack.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @Override
+    public byte[] toData() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            DataOutputStream dos = new DataOutputStream(baos);
+            AndesiteIO.writeString(this.id, dos);
+            dos.writeInt(this.amount);
+            dos.writeInt(this.meta);
+            dos.writeInt(0); // NBT length
+            dos.close();
+            return baos.toByteArray();
+        } catch (IOException ex) {
+            Logger.getLogger(AndesiteItemStack.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
