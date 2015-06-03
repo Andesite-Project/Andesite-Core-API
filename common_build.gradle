@@ -2,3 +2,13 @@
 
 version = ''
 group = ''
+
+// Apply common plugins
+// IDE plugins
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+// Lang plugins
+apply plugin: 'java'
+apply plugin: 'scala'
+// Other plugins
+apply plugin: 'maven'
