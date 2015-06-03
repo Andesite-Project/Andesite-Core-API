@@ -30,7 +30,7 @@ import info.varden.andesite.io.Serializable;
  * Base interface for all player conditions.
  * @author Marius
  */
-public interface PlayerCondition extends Serializable {
+public interface PlayerCondition extends Serializable<PlayerCondition> {
     /**
      * Constructs a PlayerCondition from raw data.
      * @param data The raw PlayerCondition data

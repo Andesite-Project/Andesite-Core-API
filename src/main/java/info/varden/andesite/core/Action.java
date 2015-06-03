@@ -29,7 +29,7 @@ import info.varden.andesite.io.Serializable;
  * Base interface for all actions.
  * @author Marius
  */
-public interface Action extends Serializable {
+public interface Action extends Serializable<Action> {
     /**
      * Constructs an action from binary file data.
      * @param aeData The binary entry data

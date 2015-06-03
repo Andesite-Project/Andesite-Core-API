@@ -26,6 +26,7 @@ package info.varden.andesite.action.base;
 import info.varden.andesite.core.Action;
 import info.varden.andesite.core.Utils;
 import info.varden.andesite.io.AndesiteIO;
+import info.varden.andesite.io.Serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -36,7 +37,7 @@ import java.io.IOException;
  * @author Marius
  * @param <T> The type of data this action stores
  */
-public abstract class IdDataAction<T> extends DataStreamActionWrapper implements Action {
+public abstract class IdDataAction<T> extends DataStreamActionWrapper implements Action, Serializable<Action> {
     
     /**
      * The key of the data key-value pair.

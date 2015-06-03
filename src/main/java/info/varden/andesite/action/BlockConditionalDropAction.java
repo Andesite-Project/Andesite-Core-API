@@ -154,10 +154,9 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
         this.mode = SilkTouchMode.findById(input.readInt());
         this.source = BlockBreakSource.findById(input.readInt());
         this.fortuneLevel = input.readInt();
-        // items
         int itemCount = input.readInt();
         for (int i = 0; i < itemCount; i++) {
-            
+            this.items.add(new AndesiteItemStack().parse(AndesiteIO.readByteArray(input)));
         }
         this.dropChance = input.readFloat();
         this.overrideDrops = input.readBoolean();
@@ -190,7 +189,10 @@ public class BlockConditionalDropAction extends DataStreamActionWrapper implemen
         output.writeInt(this.mode.getID());
         output.writeInt(this.source.getID());
         output.writeInt(this.fortuneLevel);
-        // items
+        output.writeInt(this.items.size());
+        for (int i = 0; i < this.items.size(); i++) {
+            AndesiteIO.writeByteArray(this.items.get(i).toData(), output);
+        }
         output.writeFloat(this.dropChance);
         output.writeBoolean(this.overrideDrops);
         output.writeInt(this.conditions.getRequirementCount());

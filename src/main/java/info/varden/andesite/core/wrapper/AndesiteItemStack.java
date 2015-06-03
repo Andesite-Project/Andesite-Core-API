@@ -19,16 +19,18 @@ import java.util.logging.Logger;
  * The Andesite Project's wrapper for Minecraft item stacks.
  * @author Marius
  */
-public class AndesiteItemStack implements Serializable {
+public class AndesiteItemStack implements Serializable<AndesiteItemStack> {
     private String id;
     private int amount;
     private int meta;
     // TODO: NBT data
     
-    public AndesiteItemStack(String id, int amount, int meta) {
-        this.id = id;
-        this.amount = amount;
-        this.meta = meta;
+    public AndesiteItemStack create(String id, int amount, int meta) {
+        AndesiteItemStack stack = new AndesiteItemStack();
+        stack.setID(id);
+        stack.setAmount(amount);
+        stack.setMeta(meta);
+        return stack;
     }
     
     public String getID() {
@@ -56,7 +58,7 @@ public class AndesiteItemStack implements Serializable {
     }
 
     @Override
-    public Serializable parse(byte[] data) {
+    public AndesiteItemStack parse(byte[] data) {
         try {
             DataInputStream dis = new DataInputStream(new ByteArrayInputStream(data));
             String id = AndesiteIO.readString(dis);
@@ -64,7 +66,7 @@ public class AndesiteItemStack implements Serializable {
             int meta = dis.readInt();
             int nbtLength = dis.readInt();
             dis.skip(nbtLength); // TODO: Support this
-            return new AndesiteItemStack(id, amount, meta);
+            return create(id, amount, meta);
         } catch (IOException ex) {
             Logger.getLogger(AndesiteItemStack.class.getName()).log(Level.SEVERE, null, ex);
             return null;

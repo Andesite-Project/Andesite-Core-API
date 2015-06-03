@@ -36,7 +36,7 @@ import java.io.IOException;
  * Abstraction layer made to make it easier for actions to parse and write by converting the required byte arrays to data input and output streams.
  * @author Marius
  */
-public abstract class DataStreamActionWrapper implements Action, Serializable {
+public abstract class DataStreamActionWrapper implements Action, Serializable<Action> {
 
     /**
      * Creates an action instance from the given raw data.
