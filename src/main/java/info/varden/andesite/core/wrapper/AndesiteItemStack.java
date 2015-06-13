@@ -25,7 +25,7 @@ public class AndesiteItemStack implements Serializable<AndesiteItemStack> {
     private int meta;
     // TODO: NBT data
     
-    public AndesiteItemStack create(String id, int amount, int meta) {
+    public static AndesiteItemStack create(String id, int amount, int meta) {
         AndesiteItemStack stack = new AndesiteItemStack();
         stack.setID(id);
         stack.setAmount(amount);
