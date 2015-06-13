@@ -81,7 +81,7 @@ public class AndesiteItemStack implements Serializable<AndesiteItemStack> {
             AndesiteIO.writeString(this.id, dos);
             dos.writeInt(this.amount);
             dos.writeInt(this.meta);
-            dos.writeInt(0); // NBT length
+            dos.writeInt(0); // TODO: Support NBT NBT length
             dos.close();
             return baos.toByteArray();
         } catch (IOException ex) {

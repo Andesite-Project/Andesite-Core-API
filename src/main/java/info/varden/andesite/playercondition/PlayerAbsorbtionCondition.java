@@ -41,9 +41,4 @@ public class PlayerAbsorbtionCondition extends SingleFieldCondition<Float> imple
         return player.getAbsorptionAmount();
     }
 
-    @Override
-    public boolean meetsRequirements(PlayerWrapper player) {
-        throw new UnsupportedOperationException("Not supported yet."); // TODO: Support this
-    }
-
 }
